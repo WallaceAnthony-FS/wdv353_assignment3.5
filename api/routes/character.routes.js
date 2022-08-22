@@ -9,6 +9,7 @@ router.get('/', (req, res, next) => {
     Character.find({})
     .then(result => {
         res.status(200).json({
+            message: "All characters",
             characters: result,
             metadata: {
                 method: req.method,
@@ -31,7 +32,14 @@ router.get('/:characterId', (req, res, next) => {
     Character.findById(req.params.characterId)
     .then(result => {
         res.status(200).json({
-            character: result,
+            message: "Character found",
+            character: {
+                name: result.name,
+                level: result.level,
+                experience: result.experience,
+                skill: result.skill,
+                id: result._id,
+            },
             metadata: {
                 method: req.method,
                 host: req.hostname
@@ -99,7 +107,6 @@ router.patch('/:characterId', (req, res, next) => {
 
     Character.findByIdAndUpdate(characterId, updatedCharacter)
     .then(result => {
-        console.log(result)
         res.status(200).json({
             message: "Character updated",
             character: {
