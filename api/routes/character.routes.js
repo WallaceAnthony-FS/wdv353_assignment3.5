@@ -105,7 +105,7 @@ router.patch('/:characterId', (req, res, next) => {
         skill: req.body.skill
     }
 
-    Character.findByIdAndUpdate(characterId, updatedCharacter)
+    Character.findByIdAndUpdate(characterId, updatedCharacter, {new: true})
     .then(result => {
         res.status(200).json({
             message: "Character updated",

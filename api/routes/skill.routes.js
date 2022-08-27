@@ -81,7 +81,6 @@ router.post("/", (req, res, next) => {
                     id: skill._id,
                     name: skill.name,
                     level: skill.level,
-                    character: skill.character.name,
                     characterId: skill.character._id
                 },
                 metadata: {
@@ -102,7 +101,40 @@ router.post("/", (req, res, next) => {
 
 // PATCH - update one
 router.patch("/:skillId", (req, res, next) => {
+    const updatedSkill = {
+        name: req.body.name,
+        level: req.body.level
+        // No character - Skills should not be transferable between characters.   
+    }
+    Skill.findByIdAndUpdate(req.params.skillId, updatedSkill, {new: true})
+    .then(skill => {
+        if(!skill){
+            return res.status(404).json({
+                message: "Skill not found."
+            })
+        }
 
+        res.status(200).json({
+            message: `Skill: ${skill.name} updated`,
+            skill: {
+                id: skill._id,
+                name: skill.name,
+                level: skill.level,
+                characterId: skill.character._id
+            },
+            metadata: {
+                method: req.method,
+                host: req.hostname
+            }
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: {
+                message: err.message
+            }
+        })
+    })
 })
 
 // DELETE - remove one
