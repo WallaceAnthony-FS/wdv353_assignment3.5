@@ -139,7 +139,35 @@ router.patch("/:skillId", (req, res, next) => {
 
 // DELETE - remove one
 router.delete("/:skillId", (req, res, next) => {
+    Skill.findByIdAndDelete(req.params.skillId)
+    .then(skill => {
+        if(!skill){
+            return res.status(404).json({
+                message: "Skill not found."
+            })
+        }
 
+        res.status(200).json({
+            message: `Skill: ${skill.name} deleted`,
+            skill: {
+                id: skill._id,
+                name: skill.name,
+                level: skill.level,
+                characterId: skill.character._id
+            },
+            metadata: {
+                method: req.method,
+                host: req.hostname
+            }
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: {
+                message: err.message
+            }
+        })
+    })
 })
 
 module.exports = router
