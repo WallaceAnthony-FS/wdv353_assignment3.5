@@ -1,4 +1,4 @@
-# WDV353 Assignment 3.5 NodeJS MongoDB
+# WDV353 Assignment 4.4 NodeJS MongoDB
 
 ### To start
 > npm i && npm start
