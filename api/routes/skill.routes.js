@@ -12,7 +12,25 @@ router.get("/", (req, res, next) => {
 
 // GET ONE
 router.get("/:skillId", (req, res, next) => {
-    
+    Skill.findById(req.params.skillId)
+    .select("name level character")
+    .populate("character", "_id name level experience")
+    .exec()
+    .then(skill => {
+        if(!skill){
+            return res.status(404).json({
+                message: "Skill not found"
+            })
+        }
+        res.status(200).json({
+            skill
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: err.message
+        })
+    })
 })
 
 // POST - create one
@@ -37,6 +55,7 @@ router.post("/", (req, res, next) => {
             res.status(200).json({
                 message: `New skill: ${skill.name} created`,
                 skill: {
+                    id: skill._id,
                     name: skill.name,
                     level: skill.level,
                     character: skill.character.name,
