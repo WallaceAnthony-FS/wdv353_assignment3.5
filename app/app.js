@@ -2,6 +2,7 @@ const express = require("express")
 const morgan = require("morgan")
 const mongoose = require("mongoose")
 const characterRoutes = require("../api/routes/character.routes")
+const skillRoutes = require("../api/routes/skill.routes")
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.get("/", (req, res, next) => {
 })
 
 app.use("/characters", characterRoutes)
+app.use("/skills", skillRoutes)
 
 // add middleware to handle errors and bad url paths
 app.use((req, res, next) => {

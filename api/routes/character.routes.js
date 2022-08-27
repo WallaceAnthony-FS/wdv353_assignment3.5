@@ -1,8 +1,8 @@
 const express = require("express")
 const { default: mongoose } = require("mongoose")
-const router = express.Router()
 const Character = require("../models/Character")
 
+const router = express.Router()
 
 // GET ALL
 router.get('/', (req, res, next) => {
