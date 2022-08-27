@@ -7,6 +7,8 @@ const router = express.Router()
 // GET ALL
 router.get('/', (req, res, next) => {
     Character.find({})
+    .select("_id name level experience")
+    .exec()
     .then(result => {
         res.status(200).json({
             message: "All characters",
@@ -30,6 +32,8 @@ router.get('/', (req, res, next) => {
 // GET ONE
 router.get('/:characterId', (req, res, next) => {
     Character.findById(req.params.characterId)
+    .select("_id name level experience")
+    .exec()
     .then(result => {
         res.status(200).json({
             message: "Character found",
@@ -58,6 +62,7 @@ router.get('/:characterId', (req, res, next) => {
 
 // POST
 router.post('/', (req, res, next) => {
+
     const newCharacter = new Character({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,

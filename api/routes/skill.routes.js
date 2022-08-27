@@ -1,6 +1,7 @@
 const express = require("express")
 const { default: mongoose } = require("mongoose")
 const Skill = require("../models/Skill")
+const Messages = require("../../messages/Messages")
 
 const router = express.Router()
 
@@ -37,11 +38,11 @@ router.get("/:skillId", (req, res, next) => {
     .then(skill => {
         if(!skill){
             return res.status(404).json({
-                message: "Skill not found"
+                message: Messages.skillNotFound
             })
         }
         res.status(200).json({
-            message: "Skill created",
+            message: "Skill found!",
             skill,
             metadata: {
                 method: req.method,
@@ -63,7 +64,7 @@ router.post("/", (req, res, next) => {
     .then((skills) => {
         if(skills.length >= 1){
             return res.status(400).json({
-                message: "That user already contains this skill."
+                message: Messages.characterHasSkill
             })
         }
 
@@ -110,7 +111,7 @@ router.patch("/:skillId", (req, res, next) => {
     .then(skill => {
         if(!skill){
             return res.status(404).json({
-                message: "Skill not found."
+                message: Messages.skillNotFound
             })
         }
 
@@ -143,10 +144,10 @@ router.delete("/:skillId", (req, res, next) => {
     .then(skill => {
         if(!skill){
             return res.status(404).json({
-                message: "Skill not found."
+                message: Messages.skillNotFound
             })
         }
-
+        console.log(skill)
         res.status(200).json({
             message: `Skill: ${skill.name} deleted`,
             skill: {

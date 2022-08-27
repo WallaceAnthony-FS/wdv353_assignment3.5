@@ -13,7 +13,8 @@ const skillSchema = mongoose.Schema({
     character: {
         type:  mongoose.Schema.Types.ObjectId,
         ref: "Character",
-        required: true
+        required: true,
+        foreignField: "skills"
     }
 })
 
