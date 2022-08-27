@@ -7,13 +7,31 @@ const router = express.Router()
 
 // GET ALL
 router.get("/", (req, res, next) => {
-
+    Skill.find({})
+    .select("_id name level character")
+    .populate("character", "_id name level experience")
+    .exec()
+    .then(skills => {
+        res.status(200).json({
+            message: "All skills",
+            skills,
+            metadata: {
+                method: req.method,
+                host: req.hostname
+            }
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: err.message
+        })
+    })
 })
 
 // GET ONE
 router.get("/:skillId", (req, res, next) => {
     Skill.findById(req.params.skillId)
-    .select("name level character")
+    .select("_id name level character")
     .populate("character", "_id name level experience")
     .exec()
     .then(skill => {
@@ -23,7 +41,12 @@ router.get("/:skillId", (req, res, next) => {
             })
         }
         res.status(200).json({
-            skill
+            message: "Skill created",
+            skill,
+            metadata: {
+                method: req.method,
+                host: req.hostname
+            }
         })
     })
     .catch(err => {
